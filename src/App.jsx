@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
+import Materials from "./pages/Materials";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -36,6 +37,14 @@ function App() {
       return null;
     }
     return <Auth />;
+  }
+
+  if (currentPath === "/materials") {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return null;
+    }
+    return <Materials />;
   }
 
   // Default to home

@@ -7,7 +7,14 @@ const getAuthToken = () => {
 
 // Helper function to handle API responses
 const handleResponse = async (response) => {
-  const data = await response.json();
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (e) {
+    // If response is not JSON, throw a generic error
+    throw new Error("Invalid response from server");
+  }
 
   if (!response.ok) {
     throw new Error(data.message || "Something went wrong");
@@ -114,5 +121,152 @@ export const authAPI = {
   getUser: () => {
     const userStr = localStorage.getItem("user");
     return userStr ? JSON.parse(userStr) : null;
+  },
+};
+
+// Materials API
+export const materialsAPI = {
+  // Get all materials
+  getAll: async (search = "") => {
+    const token = getAuthToken();
+
+    if (!token) {
+      throw new Error("Please login to view materials");
+    }
+
+    const url = search
+      ? `${API_BASE_URL}/materiel?search=${encodeURIComponent(search)}`
+      : `${API_BASE_URL}/materiel`;
+
+    console.log("Materials GET URL:", url);
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return handleResponse(response);
+    } catch (err) {
+      if (err.message.includes("fetch")) {
+        throw new Error(
+          "Cannot connect to server. Please check if the backend is running on port 3001",
+        );
+      }
+      throw err;
+    }
+  },
+
+  // Create material with photo upload
+  create: async (materialData) => {
+    const token = getAuthToken();
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const formData = new FormData();
+    formData.append("nom", materialData.nom);
+    formData.append("location", materialData.location);
+    if (materialData.photo) {
+      formData.append("photo", materialData.photo);
+    }
+
+    const url = `${API_BASE_URL}/materiel`;
+    console.log("Materials POST URL:", url);
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      return handleResponse(response);
+    } catch (err) {
+      if (err.message.includes("fetch")) {
+        throw new Error(
+          "Cannot connect to server. Please check if the backend is running on port 3001",
+        );
+      }
+      throw err;
+    }
+  },
+};
+
+// Transport API
+export const transportAPI = {
+  // Get all transports
+  getAll: async (search = "") => {
+    const token = getAuthToken();
+
+    if (!token) {
+      throw new Error("Please login to view transports");
+    }
+
+    const url = search
+      ? `${API_BASE_URL}/transport?search=${encodeURIComponent(search)}`
+      : `${API_BASE_URL}/transport`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return handleResponse(response);
+    } catch (err) {
+      if (err.message.includes("fetch")) {
+        throw new Error(
+          "Cannot connect to server. Please check if the backend is running on port 3001",
+        );
+      }
+      throw err;
+    }
+  },
+
+  // Create transport with photo upload
+  create: async (transportData) => {
+    const token = getAuthToken();
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const formData = new FormData();
+    formData.append("nom", transportData.nom);
+    formData.append("numero", transportData.numero);
+    formData.append("location", transportData.location);
+    formData.append("dureeMax", transportData.dureeMax);
+    if (transportData.photo) {
+      formData.append("photo", transportData.photo);
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/transport`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      return handleResponse(response);
+    } catch (err) {
+      if (err.message.includes("fetch")) {
+        throw new Error(
+          "Cannot connect to server. Please check if the backend is running on port 3001",
+        );
+      }
+      throw err;
+    }
   },
 };
