@@ -20,7 +20,7 @@ export default function GlobalMapSection() {
       </div>
 
       {/* MAP */}
-      <div className="h-[320px] rounded-2xl overflow-hidden shadow-sm">
+      <div className="h-[320px] rounded-2xl overflow-hidden shadow-xl">
         <MapContainer
           center={[31.5, 34.47]}
           zoom={11}

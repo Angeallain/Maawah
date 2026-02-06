@@ -18,7 +18,7 @@ export default function AuthSidePanel({ buttonText, onClick }) {
         </div>
 
         <div className="flex-1 flex flex-col justify-center -mt-8">
-          <h1 className="text-[64px] font-bold leading-[1.1] tracking-tight mb-5">
+          <h1 className="text-[45px] font-bold leading-[1.1] tracking-tight mb-5">
             Join a community
             <br />
             that

@@ -3,8 +3,10 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import MaterialsGrid from "../components/materials/MaterialsGrid";
 import AddMaterialForm from "../components/materials/AddMaterialForm";
+import ReportMaterialModal from "../components/materials/ReportMaterialModal";
 
 export default function Materials() {
+  const [openModal, setOpenModal] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
@@ -25,8 +27,8 @@ export default function Materials() {
           </h1>
 
           <button
-            onClick={() => setShowAddForm(true)}
-            className="bg-[#6B8E23] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#5a7a1e] transition-colors"
+            onClick={() => setOpenModal(true)}
+            className="bg-[#6B8E23] text-white px-8 py-3 rounded-2xl font-semibold"
           >
             Report Material
           </button>
@@ -46,11 +48,13 @@ export default function Materials() {
       </main>
 
       <Footer />
-
-      {showAddForm && (
-        <AddMaterialForm
-          onSuccess={handleAddSuccess}
-          onCancel={() => setShowAddForm(false)}
+      {openModal && (
+        <ReportMaterialModal
+          onClose={() => setOpenModal(false)}
+          onSuccess={() => {
+            setOpenModal(false);
+            setRefreshKey((prev) => prev + 1);
+          }}
         />
       )}
     </div>

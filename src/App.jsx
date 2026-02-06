@@ -3,6 +3,8 @@ import { useAuth } from "./contexts/AuthContext";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Materials from "./pages/Materials";
+import Projects from "./pages/Projects";
+import Contributions from "./pages/Contributions";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -45,6 +47,21 @@ function App() {
       return null;
     }
     return <Materials />;
+  }
+
+  if (currentPath === "/projects") {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return null;
+    }
+    return <Projects />;
+  }
+  if (currentPath === "/contributions") {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return null;
+    }
+    return <Contributions />;
   }
 
   // Default to home
