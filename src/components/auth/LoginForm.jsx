@@ -4,18 +4,12 @@ import { Mail, Lock } from "lucide-react";
 
 export default function LoginForm({ switchMode }) {
   const { login } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError("");
   };
 
@@ -23,7 +17,6 @@ export default function LoginForm({ switchMode }) {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       await login(formData);
       window.location.href = "/";
@@ -35,10 +28,9 @@ export default function LoginForm({ switchMode }) {
   };
 
   return (
-    <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
-      <div className="w-full max-w-md px-4 py-8">
+    <div className="w-full h-full flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-900">Welcome Back !</h2>
-
         <p className="text-gray-600 mt-1 text-xs">
           Don't have an account?{" "}
           <button
@@ -57,7 +49,6 @@ export default function LoginForm({ switchMode }) {
             </div>
           )}
 
-          {/* Email Address */}
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">
               Email Address
@@ -70,13 +61,12 @@ export default function LoginForm({ switchMode }) {
                 placeholder="jane@company.com"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23]"
                 required
               />
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">
               Password
@@ -89,22 +79,20 @@ export default function LoginForm({ switchMode }) {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23]"
                 required
               />
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#6B8E23] hover:bg-[#5a7a1e] text-white py-2.5 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+            className="w-full bg-[#6B8E23] hover:bg-[#5a7a1e] text-white py-2.5 rounded-lg font-semibold disabled:opacity-50 transition-colors text-sm"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
 
-          {/* OR divider */}
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
@@ -114,10 +102,9 @@ export default function LoginForm({ switchMode }) {
             </div>
           </div>
 
-          {/* Google Sign In */}
           <button
             type="button"
-            className="w-full border border-gray-300 bg-white text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full border border-gray-300 bg-white text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-50 flex items-center justify-center gap-2 text-sm"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -139,18 +126,6 @@ export default function LoginForm({ switchMode }) {
             </svg>
             Continue with Google
           </button>
-
-          {/* Terms and Privacy */}
-          <p className="text-[10px] text-gray-500 text-center mt-2">
-            By clicking "Create Account", you agree to our{" "}
-            <a href="#" className="text-gray-700 underline">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-gray-700 underline">
-              Privacy Policy
-            </a>
-          </p>
         </form>
       </div>
     </div>

@@ -16,8 +16,23 @@ export default function MaterialsGrid({ searchQuery = "" }) {
       setLoading(true);
       setError("");
       const data = await materialsAPI.getAll(searchQuery);
-      // Handle different response formats
-      setMaterials(Array.isArray(data) ? data : data.materials || []);
+      console.log("Materials fetched:", data); // Debug log
+      
+      // Handle different response formats (array, { materials: [] }, or { materiels: [] })
+      let materialsList = [];
+      if (Array.isArray(data)) {
+        materialsList = data;
+      } else if (data.materials && Array.isArray(data.materials)) {
+        materialsList = data.materials;
+      } else if (data.materiels && Array.isArray(data.materiels)) {
+        materialsList = data.materiels; // Handle French key plural
+      } else if (data.materiel && Array.isArray(data.materiel)) {
+        materialsList = data.materiel; // Handle French key singular (actual API response)
+      } else if (data.data && Array.isArray(data.data)) {
+        materialsList = data.data; // Handle common wrapper
+      }
+      
+      setMaterials(materialsList);
     } catch (err) {
       console.error("Materials fetch error:", err);
       setError(err.message || "Failed to load materials");

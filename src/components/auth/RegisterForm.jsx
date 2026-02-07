@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { User, Mail, Phone, Lock } from "lucide-react";
+import { User, Mail, Phone, Lock, RotateCcw } from "lucide-react";
 
 export default function RegisterForm({ switchMode }) {
   const { register } = useAuth();
@@ -16,61 +16,37 @@ export default function RegisterForm({ switchMode }) {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    // Validate required fields
-    if (
-      !formData.nom ||
-      !formData.email ||
-      !formData.numero ||
-      !formData.password
-    ) {
-      setError("Please fill in all required fields");
-      return;
-    }
-
+    if (formData.password !== formData.confirmPassword)
+      return setError("Passwords do not match");
     setLoading(true);
-
     try {
-      // Prepare data for API (remove confirmPassword)
       const { confirmPassword, ...registrationData } = formData;
-
       await register(registrationData);
       window.location.href = "/";
     } catch (err) {
-      setError(err.message || "Registration failed. Please try again.");
+      setError(err.message || "Registration failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
-      <div className="w-full max-w-md px-4 py-4">
+    <div className="w-full h-full flex items-center justify-center bg-white px-8">
+      <div className="w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-900">
           Create your account
         </h2>
-
         <p className="text-gray-600 mt-1 text-xs">
           Already have an account?{" "}
           <button
             onClick={switchMode}
-            className="font-semibold text-gray-900 hover:underline"
+            className="font-bold text-gray-900 hover:underline"
             type="button"
           >
             Log in
@@ -84,127 +60,121 @@ export default function RegisterForm({ switchMode }) {
             </div>
           )}
 
-          {/* Full Name */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-[10px] uppercase font-bold text-gray-700 mb-1">
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
               <input
                 type="text"
                 name="nom"
-                placeholder="Jane Doe"
                 value={formData.nom}
                 onChange={handleChange}
-                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                placeholder="Jane Doe"
+                className="w-full border h-[38px] border-gray-200 rounded-lg pl-9 pr-3 text-xs focus:border-[#6B8E23] focus:ring-1 focus:ring-[#6B8E23] outline-none transition-all placeholder:text-gray-300"
                 required
               />
             </div>
           </div>
 
-          {/* Email Address */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-[10px] uppercase font-bold text-gray-700 mb-1">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
               <input
                 type="email"
                 name="email"
-                placeholder="jane@company.com"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                placeholder="jane@company.com"
+                className="w-full border h-[38px] border-gray-200 rounded-lg pl-9 pr-3 text-xs focus:border-[#6B8E23] focus:ring-1 focus:ring-[#6B8E23] outline-none transition-all placeholder:text-gray-300"
                 required
               />
             </div>
           </div>
 
-          {/* Phone Number */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-[10px] uppercase font-bold text-gray-700 mb-1">
               Phone Number
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
               <input
                 type="tel"
                 name="numero"
-                placeholder="+1 (555) 000-0000"
                 value={formData.numero}
                 onChange={handleChange}
-                className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                placeholder="+1 (555) 000-0000"
+                className="w-full border h-[38px] border-gray-200 rounded-lg pl-9 pr-3 text-xs focus:border-[#6B8E23] focus:ring-1 focus:ring-[#6B8E23] outline-none transition-all placeholder:text-gray-300"
                 required
               />
             </div>
           </div>
 
-          {/* Password Fields */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
+              <label className="block text-[10px] uppercase font-bold text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   type="password"
                   name="password"
-                  placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 h-[40px] rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                  placeholder="••••••••"
+                  className="w-full border h-[38px] border-gray-200 rounded-lg pl-9 pr-3 text-xs focus:border-[#6B8E23] focus:ring-1 focus:ring-[#6B8E23] outline-none transition-all placeholder:text-gray-300"
                   required
                 />
               </div>
             </div>
-
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Confirm Password
+              <label className="block text-[10px] uppercase font-bold text-gray-700 mb-1">
+                Confirm
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <RotateCcw className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   type="password"
                   name="confirmPassword"
-                  placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full border h-[40px] border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B8E23] focus:border-transparent"
+                  placeholder="••••••••"
+                  className="w-full border h-[38px] border-gray-200 rounded-lg pl-9 pr-3 text-xs focus:border-[#6B8E23] focus:ring-1 focus:ring-[#6B8E23] outline-none transition-all placeholder:text-gray-300"
                   required
                 />
               </div>
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#6B8E23] hover:bg-[#5a7a1e] text-white py-2.5 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-2 text-sm"
+            className="w-full bg-[#6B8E23] hover:bg-[#5a7a1e] text-white py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-md mt-2"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
 
-          {/* Optional: OR divider */}
           <div className="relative my-3">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-2 bg-white text-gray-500">OR</span>
+              <span className="px-3 bg-white text-gray-400 font-medium tracking-wide">
+                OR
+              </span>
             </div>
           </div>
 
-          {/* Optional: Google Sign In */}
           <button
             type="button"
-            className="w-full border border-gray-300 bg-white text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full border border-gray-200 bg-white text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-3 text-sm transition-all shadow-sm"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -225,16 +195,16 @@ export default function RegisterForm({ switchMode }) {
             Continue with Google
           </button>
 
-          {/* Terms and Privacy */}
-          <p className="text-[10px] text-gray-500 text-center mt-2">
+          <p className="text-center text-[10px] text-gray-400 leading-relaxed mt-3 px-4">
             By clicking "Create Account", you agree to our{" "}
-            <a href="#" className="text-gray-700 underline">
+            <a href="#" className="underline">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-gray-700 underline">
+            <a href="#" className="underline">
               Privacy Policy
             </a>
+            .
           </p>
         </form>
       </div>

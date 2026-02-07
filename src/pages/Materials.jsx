@@ -22,7 +22,7 @@ export default function Materials() {
 
       <main className="px-12 py-16 flex-1">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-700">
+          <h1 className="text-4xl font-bold text-[#6B7280]">
             View all Building Materials
           </h1>
 
