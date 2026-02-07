@@ -19,7 +19,7 @@ export default function LoginForm({ switchMode }) {
     setLoading(true);
     try {
       await login(formData);
-      window.location.href = "/";
+      window.location.href = "/home";
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
     } finally {

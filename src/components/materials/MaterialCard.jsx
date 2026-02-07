@@ -1,6 +1,26 @@
-export default function MaterialCard({ material }) {
+import { useState } from "react";
+import { materialsAPI } from "../../services/api";
+
+export default function MaterialCard({ material, onUpdate }) {
+  const [loading, setLoading] = useState(false);
   const isAvailable =
-    material.status === "AVAILABLE" || material.available !== false;
+    (material.status === "AVAILABLE" || material.available !== false) &&
+    material.status !== "RESERVED";
+
+  const handleReserve = async () => {
+    if (!window.confirm("Do you want to reserve this item?")) return;
+
+    setLoading(true);
+    try {
+      await materialsAPI.reserve(material.id || material._id);
+      if (onUpdate) onUpdate();
+    } catch (err) {
+      console.error("Reservation failed:", err);
+      alert("Failed to reserve item");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-[28px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -30,16 +50,17 @@ export default function MaterialCard({ material }) {
         </h3>
 
         <button
-          className={`mt-6 px-6 py-2 rounded-full border font-medium transition-colors
+          onClick={handleReserve}
+          disabled={!isAvailable || loading}
+          className={`mt-6 px-6 py-2 rounded-full border font-medium transition-colors w-full
           ${
             isAvailable
               ? "border-[#6B8E23] text-[#6B8E23] hover:bg-[#6B8E23] hover:text-white"
-              : "bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed"
+              : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
           }
         `}
-          disabled={!isAvailable}
         >
-          Reserve
+          {loading ? "Processing..." : isAvailable ? "Reserve" : "Reserved"}
         </button>
       </div>
     </div>

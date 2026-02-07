@@ -28,7 +28,7 @@ export default function RegisterForm({ switchMode }) {
     try {
       const { confirmPassword, ...registrationData } = formData;
       await register(registrationData);
-      window.location.href = "/";
+      window.location.href = "/home";
     } catch (err) {
       setError(err.message || "Registration failed.");
     } finally {

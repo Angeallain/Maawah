@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
+import Landing from "./pages/Landing";
 import Materials from "./pages/Materials";
 import Projects from "./pages/Projects";
 import Contributions from "./pages/Contributions";
@@ -33,12 +34,24 @@ function App() {
   }
 
   // Routing logic
+  if (currentPath === "/") {
+    return <Landing />;
+  }
+
   if (currentPath === "/auth") {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/home");
       return null;
     }
     return <Auth />;
+  }
+
+  if (currentPath === "/home") {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return null;
+    }
+    return <Home />;
   }
 
   if (currentPath === "/materials") {
@@ -64,13 +77,17 @@ function App() {
     return <Contributions />;
   }
 
-  // Default to home
-  if (!isAuthenticated) {
-    navigate("/auth");
+  // Default fallback
+  if (currentPath !== "/") {
+    if (isAuthenticated) {
+      navigate("/home");
+    } else {
+      navigate("/");
+    }
     return null;
   }
 
-  return <Home />;
+  return <Landing />;
 }
 
 export default App;

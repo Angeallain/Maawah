@@ -5,7 +5,12 @@ import RegisterForm from "../components/auth/RegisterForm";
 import AuthSidePanel from "../components/auth/AuthSidePanel";
 
 export default function Auth() {
-  const [mode, setMode] = useState("login");
+  const [mode, setMode] = useState(() => {
+    // Check URL params for initial mode
+    const params = new URLSearchParams(window.location.search);
+    const modeParam = params.get("mode");
+    return modeParam === "register" ? "register" : "login";
+  });
 
   return (
     <div className="min-h-screen flex overflow-hidden relative bg-white">

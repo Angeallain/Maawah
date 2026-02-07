@@ -197,6 +197,25 @@ export const materialsAPI = {
       throw err;
     }
   },
+
+  reserve: async (id) => {
+    const token = getAuthToken();
+    if (!token) throw new Error("No authentication token found");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/materiel/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "RESERVED", available: false }),
+      });
+      return handleResponse(response);
+    } catch (err) {
+      throw err;
+    }
+  },
 };
 
 // Transport API

@@ -17,7 +17,7 @@ export default function MaterialsGrid({ searchQuery = "" }) {
       setError("");
       const data = await materialsAPI.getAll(searchQuery);
       console.log("Materials fetched:", data); // Debug log
-      
+
       // Handle different response formats (array, { materials: [] }, or { materiels: [] })
       let materialsList = [];
       if (Array.isArray(data)) {
@@ -31,7 +31,7 @@ export default function MaterialsGrid({ searchQuery = "" }) {
       } else if (data.data && Array.isArray(data.data)) {
         materialsList = data.data; // Handle common wrapper
       }
-      
+
       setMaterials(materialsList);
     } catch (err) {
       console.error("Materials fetch error:", err);

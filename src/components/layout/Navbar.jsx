@@ -39,7 +39,7 @@ export default function Navbar() {
       {/* LEFT LOGO */}
       <div
         className="flex items-center gap-3 cursor-pointer"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/home")}
       >
         <img src={logo} className="w-[110px] h-auto" alt="Logo" />
       </div>
@@ -47,9 +47,9 @@ export default function Navbar() {
       {/* CENTER NAV */}
       <div className="flex gap-14 text-sm text-gray-600 font-semibold">
         <span
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
           className={`cursor-pointer hover:text-black ${
-            currentPath === "/" ? "text-[#F97316]" : ""
+            currentPath === "/home" ? "text-[#F97316]" : ""
           }`}
         >
           Home
