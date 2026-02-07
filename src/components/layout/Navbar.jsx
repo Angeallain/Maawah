@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import logo from "../../images/logo_image.png";
-import { Bell, LogOut, User, PlusCircle, Settings, Menu, X } from "lucide-react";
+import {
+  Bell,
+  LogOut,
+  User,
+  PlusCircle,
+  Settings,
+  Menu,
+  X,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { authAPI } from "../../services/api";
 import CreateProjectModal from "../projects/CreateProjectModal";
@@ -151,7 +159,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="md:hidden text-gray-600"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -163,7 +171,10 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="absolute top-[82.5px] left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl md:hidden animate-in fade-in slide-in-from-top-2">
           <span
-            onClick={() => {navigate("/home"); setIsMenuOpen(false)}}
+            onClick={() => {
+              navigate("/home");
+              setIsMenuOpen(false);
+            }}
             className={`text-lg font-medium cursor-pointer ${
               currentPath === "/home" ? "text-[#F97316]" : "text-gray-600"
             }`}
@@ -171,7 +182,10 @@ export default function Navbar() {
             Home
           </span>
           <span
-            onClick={() => {navigate("/projects"); setIsMenuOpen(false)}}
+            onClick={() => {
+              navigate("/projects");
+              setIsMenuOpen(false);
+            }}
             className={`text-lg font-medium cursor-pointer ${
               currentPath === "/projects" ? "text-[#F97316]" : "text-gray-600"
             }`}
@@ -179,15 +193,23 @@ export default function Navbar() {
             My Projects
           </span>
           <span
-            onClick={() => {navigate("/contributions"); setIsMenuOpen(false)}}
+            onClick={() => {
+              navigate("/contributions");
+              setIsMenuOpen(false);
+            }}
             className={`text-lg font-medium cursor-pointer ${
-              currentPath === "/contributions" ? "text-[#F97316]" : "text-gray-600"
+              currentPath === "/contributions"
+                ? "text-[#F97316]"
+                : "text-gray-600"
             }`}
           >
             My Contributions
           </span>
           <span
-            onClick={() => {navigate("/materials"); setIsMenuOpen(false)}}
+            onClick={() => {
+              navigate("/materials");
+              setIsMenuOpen(false);
+            }}
             className={`text-lg font-medium cursor-pointer ${
               currentPath === "/materials" ? "text-[#F97316]" : "text-gray-600"
             }`}
