@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import logo from "../../images/logo_image.png";
-import { Bell, LogOut, User, PlusCircle, Settings } from "lucide-react";
+import { Bell, LogOut, User, PlusCircle, Settings, Menu, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { authAPI } from "../../services/api";
 import CreateProjectModal from "../projects/CreateProjectModal";
@@ -12,6 +12,7 @@ export default function Navbar() {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showCreateProject, setShowCreateProject] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-white/80  border-b h-[82.5px] sticky top-0 z-[10000] border-gray-100 px-12 flex justify-between items-center">
+    <div className="bg-white/80  border-b h-[82.5px] sticky top-0 z-[10000] border-gray-100 px-6 md:px-12 flex justify-between items-center transition-all">
       {/* LEFT LOGO */}
       <div
         className="flex items-center gap-3 cursor-pointer"
@@ -45,7 +46,7 @@ export default function Navbar() {
       </div>
 
       {/* CENTER NAV */}
-      <div className="flex gap-14 text-sm text-gray-600 font-semibold">
+      <div className="hidden md:flex gap-14 text-sm text-gray-600 font-semibold">
         <span
           onClick={() => navigate("/home")}
           className={`cursor-pointer hover:text-black ${
@@ -81,7 +82,7 @@ export default function Navbar() {
       </div>
 
       {/* RIGHT ICONS */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 md:gap-6">
         {/* Notification */}
         <div className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200 transition">
           <Bell size={20} className="text-gray-600" />
@@ -148,7 +149,53 @@ export default function Navbar() {
             </div>
           )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-gray-600"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="absolute top-[82.5px] left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl md:hidden animate-in fade-in slide-in-from-top-2">
+          <span
+            onClick={() => {navigate("/home"); setIsMenuOpen(false)}}
+            className={`text-lg font-medium cursor-pointer ${
+              currentPath === "/home" ? "text-[#F97316]" : "text-gray-600"
+            }`}
+          >
+            Home
+          </span>
+          <span
+            onClick={() => {navigate("/projects"); setIsMenuOpen(false)}}
+            className={`text-lg font-medium cursor-pointer ${
+              currentPath === "/projects" ? "text-[#F97316]" : "text-gray-600"
+            }`}
+          >
+            My Projects
+          </span>
+          <span
+            onClick={() => {navigate("/contributions"); setIsMenuOpen(false)}}
+            className={`text-lg font-medium cursor-pointer ${
+              currentPath === "/contributions" ? "text-[#F97316]" : "text-gray-600"
+            }`}
+          >
+            My Contributions
+          </span>
+          <span
+            onClick={() => {navigate("/materials"); setIsMenuOpen(false)}}
+            className={`text-lg font-medium cursor-pointer ${
+              currentPath === "/materials" ? "text-[#F97316]" : "text-gray-600"
+            }`}
+          >
+            Materials
+          </span>
+        </div>
+      )}
 
       {showCreateProject && (
         <CreateProjectModal onClose={() => setShowCreateProject(false)} />
